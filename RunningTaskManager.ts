@@ -9,12 +9,14 @@ function saveTask() {
       TaskManagerConfig.valueColumnName + TaskManagerConfig.startDateRow
     )
     .getValue();
+  startDate = DateUtility.begin(startDate);
   var endDate: Date = spreadSheet
     .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.endDateRow)
     .getValue();
   if (endDate == null || endDate == undefined || endDate.toString() == "") {
     endDate = DateUtility.addDays(startDate, 20);
   }
+  endDate = DateUtility.begin(endDate);
   var hourPerDay: number = spreadSheet
     .getRange(
       TaskManagerConfig.valueColumnName + TaskManagerConfig.hourPerDayRow
@@ -74,7 +76,7 @@ function detectWritingRow(
 
 function runningTasks(): Task[] {
   var tasks: Task[] = [];
-  var r = RunningTasksConfig.startRow;
+  var r = RunningTasksConfig.startRow - 1;
   var v: string = null;
 
   var spreadSheet = sheetFromName(TaskManagerConfig.sheetName);
@@ -84,7 +86,8 @@ function runningTasks(): Task[] {
     var summary = spreadSheet
       .getRange(RunningTasksConfig.summaryColumnName + r)
       .getValue();
-    if (v == null || v == "" || v == undefined || v == summary || r >= 100) {
+    console.log("Collecting from row = %d, summary = %s", r, summary);
+    if (summary == null || summary == "" || summary == undefined || r >= 100) {
       break;
     }
     var startDate = spreadSheet

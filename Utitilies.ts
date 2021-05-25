@@ -7,6 +7,12 @@ class DateUtility {
     newDate.setDate(intoDate.getDate() + days);
     return newDate;
   }
+
+  static begin(date: Date): Date {
+    var newDate = date == null ? new Date() : date;
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  }
 }
 
 class SheetNames {
