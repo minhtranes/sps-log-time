@@ -50,11 +50,13 @@ function detectWritingRow(
   summary: string
 ): number {
   var r = RunningTasksConfig.startRow - 1;
+  var v: string = null;
   do {
     r++;
-    var v = spreadSheet
+    let v = spreadSheet
       .getRange(RunningTasksConfig.summaryColumnName + r)
       .getValue();
-  } while (v == null || v == "" || v == summary);
+    console.log("Checking v = %s, summary = %s", v, summary);
+  } while (v == null || v == "" || v == undefined || v == summary || r >= 100);
   return r;
 }
