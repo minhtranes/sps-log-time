@@ -21,36 +21,31 @@ function saveTask() {
     )
     .getValue();
 
-  writeTask(summary, startDate, endDate, hourPerDay);
+  writeTask(new Task(summary, startDate, endDate, hourPerDay));
 }
-function writeTask(
-  summary: string,
-  startDate: Date,
-  endDate: Date,
-  hourPerDay: number
-) {
+function writeTask(task: Task) {
   var spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet =
     SpreadsheetApp.getActive();
-  var r = detectWritingRow(spreadSheet, summary);
+  var r = detectWritingRow(spreadSheet, task.getSummary());
 
   spreadSheet
     .getRange(RunningTasksConfig.summaryColumnName + r)
-    .setValue(summary);
+    .setValue(task.getSummary());
   spreadSheet
     .getRange(RunningTasksConfig.startDateColumnName + r)
-    .setValue(startDate);
+    .setValue(task.getStartDate());
   spreadSheet
     .getRange(RunningTasksConfig.endDateColumnName + r)
-    .setValue(endDate);
+    .setValue(task.getEndDate());
   spreadSheet
     .getRange(RunningTasksConfig.hourPerDayColumnName + r)
-    .setValue(hourPerDay);
+    .setValue(task.getHourPerDay());
   console.log(
     "Wrote task [%s, %s, %s, %d] into row [%d]",
-    summary,
-    startDate,
-    endDate,
-    hourPerDay,
+    task.getSummary(),
+    task.getStartDate(),
+    task.getEndDate(),
+    task.getHourPerDay(),
     r
   );
 }
