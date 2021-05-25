@@ -32,6 +32,7 @@ function writeTask(
   var spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet =
     SpreadsheetApp.getActive();
   var r = detectWritingRow(spreadSheet, summary);
+
   spreadSheet
     .getRange(RunningTasksConfig.summaryColumnName + r)
     .setValue(summary);
@@ -44,6 +45,14 @@ function writeTask(
   spreadSheet
     .getRange(RunningTasksConfig.hourPerDayColumnName + r)
     .setValue(hourPerDay);
+  console.log(
+    "Wrote task [%s, %s, %s, %d] into row [%d]",
+    summary,
+    startDate,
+    endDate,
+    hourPerDay,
+    r
+  );
 }
 function detectWritingRow(
   spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
