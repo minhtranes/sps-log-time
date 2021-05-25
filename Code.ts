@@ -8,7 +8,7 @@
  * End date could be added manually with value must equal or after start date
  * All running tasks in particular date share 8 hours
  *
- * Scheduler Function:
+ * Scheduler Function (triggered at 01:00 AM ICT each day):
  * Automatically move running tasks forward to current day
  * Divide 8 hours equally to all running tasks
  * Adjust the same date duration bas
