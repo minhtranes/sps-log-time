@@ -31,6 +31,7 @@ class MonthlyReportConfig {
 }
 
 class TaskManagerConfig {
+  static sheetName = "Task Manager";
   static labelColumnName: string = "B";
   static valueColumnName: string = "C";
   static summaryRow: number = 3;

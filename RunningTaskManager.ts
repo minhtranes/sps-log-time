@@ -68,3 +68,33 @@ function detectWritingRow(
   }
   return r;
 }
+
+function runningTasks(): Task[] {
+  var tasks: Task[] = [];
+  var r = RunningTasksConfig.startRow;
+  var v: string = null;
+
+  var spreadSheet = sheetFromName(TaskManagerConfig.sheetName);
+
+  while (true) {
+    r++;
+    var summary = spreadSheet
+      .getRange(RunningTasksConfig.summaryColumnName + r)
+      .getValue();
+    if (v == null || v == "" || v == undefined || v == summary || r >= 100) {
+      break;
+    }
+    var startDate = spreadSheet
+      .getRange(RunningTasksConfig.startDateColumnName + r)
+      .getValue();
+    var endDate = spreadSheet
+      .getRange(RunningTasksConfig.endDateColumnName + r)
+      .getValue();
+    var hourPerDate = spreadSheet
+      .getRange(RunningTasksConfig.hourPerDayColumnName + r)
+      .getValue();
+
+    tasks.push(new Task(summary, startDate, endDate, hourPerDate));
+  }
+  return tasks;
+}
