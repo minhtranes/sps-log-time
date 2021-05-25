@@ -3,6 +3,15 @@ class Task {
   private startDate: Date;
   private endDate: Date;
   private hourPerDay: number;
+  private loggedHour: number;
+
+  public getLoggedHour(): number {
+    return this.loggedHour;
+  }
+
+  public setLoggedHour(loggedHour: number): void {
+    this.loggedHour = loggedHour;
+  }
 
   constructor(
     summary: string,

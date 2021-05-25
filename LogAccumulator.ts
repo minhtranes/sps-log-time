@@ -20,7 +20,27 @@ function accumulateRange(tasks: Task[], accStartDate: Date, accEndDate: Date) {
 function accumulateDay(tasks: Task[], date: Date) {
   var sheet = indicateReportSheet(date);
 
-  var dateRange: number[] = detectReportRange(sheet, date);
+  var dateRows: number[] = detectReportRange(sheet, date);
+  console.log("Delete the rows relate to date [%s]", date);
+  dateRows.forEach((r) => {
+    sheet.deleteRow(r);
+  });
+  var appliedTasks = tasks.filter((t) => {
+    return t.getStartDate() <= date && t.getEndDate() >= date;
+  });
+  appliedTasks.forEach((t) => {
+    t.setLoggedHour(
+      t.getHourPerDay() > 0 ? t.getHourPerDay() : 8 / appliedTasks.length
+    );
+  });
+
+  var insertRow = dateRows[dateRows.length];
+  appliedTasks.forEach((t) => {
+    sheet.insertRowAfter(insertRow);
+    sheet
+      .getRange(MonthlyReportConfig.commentColumnName + insertRow)
+      .setValue(t.getSummary());
+  });
 }
 function indicateReportSheet(date: Date): GoogleAppsScript.Spreadsheet.Sheet {
   var sheetName = date.getFullYear + "_" + date.getMonth;

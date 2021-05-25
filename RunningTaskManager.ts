@@ -20,6 +20,9 @@ function saveTask() {
       TaskManagerConfig.valueColumnName + TaskManagerConfig.hourPerDayRow
     )
     .getValue();
+  if (hourPerDay == null || hourPerDay == undefined) {
+    hourPerDay = 0;
+  }
 
   writeTask(new Task(summary, startDate, endDate, hourPerDay));
 }
