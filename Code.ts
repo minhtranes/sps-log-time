@@ -1,8 +1,11 @@
 /**
  * Task is identified by summary and start date
- * Task is input manually with a required start date
  * Task has a start date and end date (task session)
- * End date must euqal or after start date
+ * Task is input manually with:
+ *    Summary is required
+ *    Start date is required
+ *    End date is automatically added with 20 days after start day
+ * End date could be added manually with value must equal or after start date
  * All running tasks in particular date share 8 hours
  *
  * Scheduler Function:
