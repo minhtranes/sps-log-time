@@ -17,8 +17,8 @@ function testAccumulate() {
   }
   var accStartDate = new Date();
   var accEndDate = new Date();
-  accStartDate.setTime(Date.parse("2021-05-19 00:00:00"));
-  accEndDate.setTime(Date.parse("2021-05-21 00:00:00"));
+  accStartDate.setTime(Date.parse("2021-05-03 00:00:00"));
+  accEndDate.setTime(Date.parse("2021-05-26 00:00:00"));
 
   accumulateRange(tasks, accStartDate, accEndDate);
 }
@@ -36,6 +36,11 @@ function accumulateRange(tasks: Task[], accStartDate: Date, accEndDate: Date) {
   var date = accStartDate;
 
   while (date <= accEndDate) {
+    if (date.getDay() == 0 || date.getDay() == 7) {
+      console.log("Ignore Sunday and Saturday [%s]", date);
+      date = DateUtility.addDays(date, 1);
+      continue;
+    }
     accumulateDay(tasks, date);
     date = DateUtility.addDays(date, 1);
   }
