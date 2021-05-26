@@ -19,6 +19,7 @@ function onOpen(e) {
   SpreadsheetApp.getUi()
     .createMenu("SPS")
     .addItem("Export Monthly Report", "exportMonthlyReports")
+    .addItem("Test Export", "testAccumulate")
     .addToUi();
 }
 
