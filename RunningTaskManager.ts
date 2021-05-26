@@ -56,6 +56,9 @@ function writeTask(task: Task) {
   spreadSheet
     .getRange(RunningTasksConfig.hourPerDayColumnName + r)
     .setValue(task.getHourPerDay());
+  spreadSheet
+    .getRange(RunningTasksConfig.categoryColumnName + r)
+    .setValue(task.getCategory());
   console.log(
     "Wrote task [%s, %s, %s, %d] into row [%d]",
     task.getSummary(),
@@ -110,8 +113,12 @@ function runningTasks(): Task[] {
     var hourPerDate = spreadSheet
       .getRange(RunningTasksConfig.hourPerDayColumnName + r)
       .getValue();
-
-    tasks.push(new Task(summary, startDate, endDate, hourPerDate));
+    var category = spreadSheet
+      .getRange(RunningTasksConfig.categoryColumnName + r)
+      .getValue();
+    var task = new Task(summary, startDate, endDate, hourPerDate);
+    task.setCategory(category);
+    tasks.push(task);
   }
   return tasks;
 }

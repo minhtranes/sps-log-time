@@ -47,4 +47,5 @@ class RunningTasksConfig {
   static startDateColumnName: string = "F";
   static endDateColumnName: string = "G";
   static hourPerDayColumnName: string = "H";
+  static categoryColumnName: string = "I";
 }
