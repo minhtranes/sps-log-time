@@ -42,7 +42,7 @@ function saveTask() {
 function writeTask(task: Task) {
   var spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet =
     SpreadsheetApp.getActive();
-  var r = detectWritingRow(spreadSheet, task.getSummary());
+  var r = detectWritingRow(spreadSheet, task.getSummary(), task.getStartDate());
 
   spreadSheet
     .getRange(RunningTasksConfig.summaryColumnName + r)
@@ -70,7 +70,8 @@ function writeTask(task: Task) {
 }
 function detectWritingRow(
   spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
-  summary: string
+  summary: string,
+  startDate: Date
 ): number {
   var r = RunningTasksConfig.startRow - 1;
   var v: string = null;
@@ -81,7 +82,13 @@ function detectWritingRow(
       .getRange(RunningTasksConfig.summaryColumnName + r)
       .getValue();
     console.log("Checking row = %d, v = %s, summary = %s", r, v, summary);
-    if (v == null || v == "" || v == undefined || v == summary || r >= 100) {
+    if (v == null || v == "" || v == undefined || r >= 100) {
+      return r;
+    }
+    var sd = spreadSheet
+      .getRange(RunningTasksConfig.startDateColumnName + r)
+      .getValue();
+    if (v == summary && sd.getTime() == startDate.getTime()) {
       return r;
     }
   }
