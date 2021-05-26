@@ -52,6 +52,16 @@ function accumulateRange(accStartDate: Date, accEndDate: Date) {
   }
 }
 function accumulateDay(tasks: Task[], date: Date) {
+  var appliedTasks = tasks.filter((t) => {
+    return t.getStartDate() <= date && t.getEndDate() >= date;
+  });
+
+  if (appliedTasks.length <= 0) {
+    console.warn("There is no task applied for day [%s] !", date);
+    return;
+  }
+  console.log("Reset logged time to 0");
+  appliedTasks.forEach((t) => t.setLoggedHour(0));
   console.log("Accumulate date [%s]", date);
   var sheet = indicateReportSheet(date);
   console.log("Report sheet is [%s]", sheet.getName());
@@ -67,9 +77,6 @@ function accumulateDay(tasks: Task[], date: Date) {
   if (dateRows.length <= 0) {
     dateRows.push(MonthlyReportConfig.firstRow);
   }
-  var appliedTasks = tasks.filter((t) => {
-    return t.getStartDate() <= date && t.getEndDate() >= date;
-  });
 
   var fixedTasks = appliedTasks.filter((t) => t.getHourPerDay() > 0);
   var sumFixedTasks =
@@ -80,15 +87,26 @@ function accumulateDay(tasks: Task[], date: Date) {
             return t1 + t2;
           })
       : 0;
-  var hourPerFlexTask = Math.floor(
-    (8 - sumFixedTasks) / (appliedTasks.length - fixedTasks.length)
-  );
 
-  appliedTasks.forEach((t) => {
-    t.setLoggedHour(
-      t.getHourPerDay() > 0 ? t.getHourPerDay() : hourPerFlexTask
-    );
-  });
+  appliedTasks
+    .filter((t) => t.getHourPerDay() > 0)
+    .forEach((t) => t.setLoggedHour(t.getHourPerDay()));
+
+  if (fixedTasks < appliedTasks) {
+    var restH = 8 - sumFixedTasks;
+    var c = 0;
+    while (restH > 0) {
+      var idx = c % appliedTasks.length;
+      if (appliedTasks[idx].getHourPerDay() > 0) {
+        c++;
+        continue;
+      }
+      appliedTasks[idx].setLoggedHour(appliedTasks[idx].getLoggedHour() + 1);
+
+      restH--;
+      c++;
+    }
+  }
 
   console.log("Append rows of date [%s]", date);
   var insertRow = dateRows[dateRows.length - 1];

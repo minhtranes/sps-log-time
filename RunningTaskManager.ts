@@ -125,6 +125,7 @@ function runningTasks(): Task[] {
       .getValue();
     var task = new Task(summary, startDate, endDate, hourPerDate);
     task.setCategory(category);
+    task.setLoggedHour(0);
     tasks.push(task);
   }
   return tasks;
