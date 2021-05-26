@@ -64,7 +64,9 @@ function accumulateDay(tasks: Task[], date: Date) {
       console.log("Deleted row [%d]", r);
     });
   }
-
+  if (dateRows.length <= 0) {
+    dateRows.push(MonthlyReportConfig.firstRow);
+  }
   var appliedTasks = tasks.filter((t) => {
     return t.getStartDate() <= date && t.getEndDate() >= date;
   });
@@ -137,10 +139,7 @@ function detectReportRange(
     }
     r++;
   }
-  if (rn.length <= 0) {
-    rn.push(MonthlyReportConfig.firstRow);
-    return rn;
-  }
+
   if (rn.length > 1) {
     rn.sort((r1, r2) => {
       return r2 - r1;
