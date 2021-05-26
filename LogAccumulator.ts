@@ -68,11 +68,20 @@ function accumulateDay(tasks: Task[], date: Date) {
   var appliedTasks = tasks.filter((t) => {
     return t.getStartDate() <= date && t.getEndDate() >= date;
   });
+
+  var fixedTasks = appliedTasks.filter((t) => t.getHourPerDay() > 0);
+  var sumFixedTasks = fixedTasks
+    .map((t) => t.getHourPerDay())
+    .reduce((t1, t2) => {
+      return t1 + t2;
+    });
+  var hourPerFlexTask = Math.floor(
+    (8 - sumFixedTasks) / (appliedTasks.length - fixedTasks.length)
+  );
+
   appliedTasks.forEach((t) => {
     t.setLoggedHour(
-      t.getHourPerDay() > 0
-        ? t.getHourPerDay()
-        : Math.floor(8 / appliedTasks.length)
+      t.getHourPerDay() > 0 ? t.getHourPerDay() : hourPerFlexTask
     );
   });
 
