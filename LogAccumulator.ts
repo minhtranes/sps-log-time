@@ -17,13 +17,21 @@ function testAccumulate() {
   }
   var accStartDate = new Date();
   var accEndDate = new Date();
-  accStartDate.setTime(Date.parse("2021-05-01 00:00:00"));
-  accEndDate.setTime(Date.parse("2021-05-24 00:00:00"));
+  accStartDate.setTime(Date.parse("2021-05-19 00:00:00"));
+  accEndDate.setTime(Date.parse("2021-05-21 00:00:00"));
 
   accumulateRange(tasks, accStartDate, accEndDate);
 }
 
 function accumulateRange(tasks: Task[], accStartDate: Date, accEndDate: Date) {
+  if (accStartDate > accEndDate) {
+    console.log(
+      "End day[%s] must be after or same start day[%s]",
+      accEndDate,
+      accStartDate
+    );
+    return;
+  }
   console.log("Accumulate logs from [%s] to [%s]", accStartDate, accEndDate);
   var date = accStartDate;
 
@@ -39,10 +47,13 @@ function accumulateDay(tasks: Task[], date: Date) {
 
   var dateRows: number[] = detectReportRange(sheet, date);
 
-  dateRows.forEach((r) => {
-    sheet.deleteRow(r);
-    console.log("Deleted row [%d]", r);
-  });
+  if (dateRows.length > 1) {
+    dateRows.forEach((r) => {
+      sheet.deleteRow(r);
+      console.log("Deleted row [%d]", r);
+    });
+  }
+
   var appliedTasks = tasks.filter((t) => {
     return t.getStartDate() <= date && t.getEndDate() >= date;
   });
