@@ -78,6 +78,14 @@ function accumulateDay(tasks: Task[], date: Date) {
     sheet
       .getRange(MonthlyReportConfig.durationColumnName + insertRow)
       .setValue(t.getLoggedHour());
+
+    sheet.getRange(MonthlyReportConfig.idColumnName + insertRow).setValue(3144);
+    sheet
+      .getRange(MonthlyReportConfig.nameColumnName + insertRow)
+      .setValue("Trần Hoàng Minh");
+    sheet
+      .getRange(MonthlyReportConfig.categoryColumnName + insertRow)
+      .setValue(t.getCategory());
   });
 }
 function indicateReportSheet(date: Date): GoogleAppsScript.Spreadsheet.Sheet {

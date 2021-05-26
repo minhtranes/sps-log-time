@@ -35,7 +35,9 @@ function saveTask() {
     hourPerDay = 0;
   }
 
-  writeTask(new Task(summary, startDate, endDate, hourPerDay));
+  var task = new Task(summary, startDate, endDate, hourPerDay);
+  task.setCategory(category);
+  writeTask(task);
 }
 function writeTask(task: Task) {
   var spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet =
