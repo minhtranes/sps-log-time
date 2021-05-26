@@ -4,6 +4,15 @@ class Task {
   private endDate: Date;
   private hourPerDay: number;
   private loggedHour: number;
+  private category: string;
+
+  public getCategory(): string {
+    return this.category;
+  }
+
+  public setCategory(category: string): void {
+    this.category = category;
+  }
 
   public getLoggedHour(): number {
     return this.loggedHour;

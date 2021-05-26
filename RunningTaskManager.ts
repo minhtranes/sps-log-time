@@ -4,6 +4,15 @@ function saveTask() {
   var summary: string = spreadSheet
     .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.summaryRow)
     .getValue();
+  var category: string = spreadSheet
+    .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.categoryRow)
+    .getValue();
+  if (category == null || category == undefined || category == "") {
+    console.log("Category can not be empty");
+    return;
+  }
+  summary = category + "_" + summary;
+
   var startDate: Date = spreadSheet
     .getRange(
       TaskManagerConfig.valueColumnName + TaskManagerConfig.startDateRow

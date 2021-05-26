@@ -38,12 +38,13 @@ class TaskManagerConfig {
   static startDateRow: number = 4;
   static endDateRow: number = 5;
   static hourPerDayRow: number = 6;
+  static categoryRow: number = 7;
 }
 
 class RunningTasksConfig {
-  static startRow: number = 3;
-  static summaryColumnName: string = "G";
-  static startDateColumnName: string = "H";
-  static endDateColumnName: string = "I";
-  static hourPerDayColumnName: string = "J";
+  static startRow: number = 15;
+  static summaryColumnName: string = "E";
+  static startDateColumnName: string = "F";
+  static endDateColumnName: string = "G";
+  static hourPerDayColumnName: string = "H";
 }
