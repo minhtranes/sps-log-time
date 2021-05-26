@@ -1,29 +1,29 @@
-function accumulate() {
-  var tasks: Task[] = runningTasks();
-  if (tasks == null || tasks.length <= 0) {
-    console.log("There is no running task");
-    return;
-  }
-  var accStartDate = DateUtility.begin(new Date());
-  var accEndDate = DateUtility.begin(new Date());
+function accumulateToday() {
+  var today = new Date();
+  var accStartDate = DateUtility.begin(today);
+  var accEndDate = DateUtility.begin(today);
 
-  accumulateRange(tasks, accStartDate, accEndDate);
+  accumulateRange(accStartDate, accEndDate);
 }
+
+function accumulateYesterday() {
+  var yesterday = DateUtility.addDays(null, -1);
+  var accStartDate = DateUtility.begin(yesterday);
+  var accEndDate = DateUtility.begin(yesterday);
+
+  accumulateRange(accStartDate, accEndDate);
+}
+
 function testAccumulate() {
-  var tasks: Task[] = runningTasks();
-  if (tasks == null || tasks.length <= 0) {
-    console.log("There is no running task");
-    return;
-  }
   var accStartDate = new Date();
   var accEndDate = new Date();
   accStartDate.setTime(Date.parse("2021-05-03 00:00:00"));
   accEndDate.setTime(Date.parse("2021-05-26 00:00:00"));
 
-  accumulateRange(tasks, accStartDate, accEndDate);
+  accumulateRange(accStartDate, accEndDate);
 }
 
-function accumulateRange(tasks: Task[], accStartDate: Date, accEndDate: Date) {
+function accumulateRange(accStartDate: Date, accEndDate: Date) {
   if (accStartDate > accEndDate) {
     console.log(
       "End day[%s] must be after or same start day[%s]",
@@ -32,6 +32,12 @@ function accumulateRange(tasks: Task[], accStartDate: Date, accEndDate: Date) {
     );
     return;
   }
+  var tasks: Task[] = runningTasks();
+  if (tasks == null || tasks.length <= 0) {
+    console.log("There is no running task");
+    return;
+  }
+
   console.log("Accumulate logs from [%s] to [%s]", accStartDate, accEndDate);
   var date = accStartDate;
 
