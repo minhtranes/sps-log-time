@@ -58,7 +58,7 @@ function accumulateDay(tasks: Task[], date: Date) {
 
   var dateRows: number[] = detectReportRange(sheet, date);
 
-  if (dateRows.length > 1) {
+  if (dateRows.length > 0) {
     dateRows.forEach((r) => {
       sheet.deleteRow(r);
       console.log("Deleted row [%d]", r);
@@ -70,11 +70,14 @@ function accumulateDay(tasks: Task[], date: Date) {
   });
 
   var fixedTasks = appliedTasks.filter((t) => t.getHourPerDay() > 0);
-  var sumFixedTasks = fixedTasks
-    .map((t) => t.getHourPerDay())
-    .reduce((t1, t2) => {
-      return t1 + t2;
-    });
+  var sumFixedTasks =
+    fixedTasks.length > 0
+      ? fixedTasks
+          .map((t) => t.getHourPerDay())
+          .reduce((t1, t2) => {
+            return t1 + t2;
+          })
+      : 0;
   var hourPerFlexTask = Math.floor(
     (8 - sumFixedTasks) / (appliedTasks.length - fixedTasks.length)
   );
