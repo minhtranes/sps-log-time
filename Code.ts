@@ -20,6 +20,7 @@ function onOpen(e) {
     .createMenu("SPS")
     .addItem("Export Monthly Report", "exportMonthlyReports")
     .addItem("Test Export", "testAccumulate")
+    .addItem("Accumulate Yesterday", "accumulateYesterday")
     .addToUi();
 }
 
