@@ -7,7 +7,7 @@ function accumulateToday() {
 }
 
 function accumulateYesterday() {
-  var yesterday = DateUtility.addDays(null, -1);
+  var yesterday = DateUtility.addDays(new Date(), -1);
   var accStartDate = DateUtility.begin(yesterday);
   var accEndDate = DateUtility.begin(yesterday);
 
