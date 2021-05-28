@@ -18,9 +18,9 @@
 function onOpen(e) {
   SpreadsheetApp.getUi()
     .createMenu("SPS")
-    .addItem("Export Monthly Report", "exportMonthlyReports")
-    .addItem("Test Export", "testAccumulate")
     .addItem("Accumulate Yesterday", "accumulateYesterday")
+    .addItem("Accumulate Today", "accumulateToday")
+    .addItem("Accumulate This Month !!", "accumulateThisMonth")
     .addToUi();
 }
 

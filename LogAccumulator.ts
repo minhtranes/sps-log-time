@@ -14,11 +14,11 @@ function accumulateYesterday() {
   accumulateRange(accStartDate, accEndDate);
 }
 
-function testAccumulate() {
+function accumulateThisMonth() {
   var accStartDate = new Date();
-  var accEndDate = new Date();
-  accStartDate.setTime(Date.parse("2021-05-03 00:00:00"));
-  accEndDate.setTime(Date.parse("2021-05-26 00:00:00"));
+  accStartDate.setMonth(accStartDate.getMonth(), 1);
+  accStartDate = DateUtility.begin(accStartDate);
+  var accEndDate = DateUtility.begin(new Date());
 
   accumulateRange(accStartDate, accEndDate);
 }
