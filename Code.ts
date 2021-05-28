@@ -24,33 +24,6 @@ function onOpen(e) {
     .addToUi();
 }
 
-function onEdit(e) {
-  var range: GoogleAppsScript.Spreadsheet.Range = e.range;
-  var sheet = range.getSheet();
-  if (sheet.getName() != LogConfig.sheetName) {
-    return;
-  }
-
-  var changedRow = range.getRow();
-  sheet
-    .getRange("J1")
-    .setValue("Edited col =  " + range.getColumn() + ", row = " + changedRow);
-
-  if (range.getColumn() != LogConfig.taskColumnNameNumber) {
-    return;
-  }
-  var updatedValue = range.getValue();
-  if (updatedValue == null || updatedValue == "") {
-    sheet.getRange(LogConfig.dateColumnName + changedRow).clear();
-    return;
-  }
-
-  var dateRange = sheet.getRange(LogConfig.dateColumnName + changedRow);
-  if (dateRange.getValue() == null || dateRange.getValue() == "") {
-    dateRange.setValue(new Date());
-  }
-}
-
 function exportMonthlyReports() {
   // Detect the months from the log raw and devide those records into monthly report sheet
   // Trigger cleanup job for the daily records older than 2 days
