@@ -107,6 +107,12 @@ function accumulateDay(tasks: Task[], date: Date) {
       c++;
     }
   }
+  appliedTasks
+    .filter((t) => t.getLoggedHour() <= 0)
+    .forEach((t) => {
+      t.setLoggedHour(1);
+      console.warn("Assign %d for task [%s]", 1, t.getSummary());
+    });
 
   console.log("Append rows of date [%s]", date);
   var insertRow = dateRows[dateRows.length - 1];

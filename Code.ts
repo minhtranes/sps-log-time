@@ -26,9 +26,13 @@ function onOpen(e) {
 
 function onEdit(e) {
   var range: GoogleAppsScript.Spreadsheet.Range = e.range;
+  var sheet = range.getSheet();
+  if (sheet.getName() != LogConfig.sheetName) {
+    return;
+  }
 
   var changedRow = range.getRow();
-  SpreadsheetApp.getActiveSheet()
+  sheet
     .getRange("J1")
     .setValue("Edited col =  " + range.getColumn() + ", row = " + changedRow);
 
@@ -37,15 +41,11 @@ function onEdit(e) {
   }
   var updatedValue = range.getValue();
   if (updatedValue == null || updatedValue == "") {
-    SpreadsheetApp.getActiveSheet()
-      .getRange(LogConfig.dateColumnName + changedRow)
-      .clear();
+    sheet.getRange(LogConfig.dateColumnName + changedRow).clear();
     return;
   }
 
-  var dateRange = SpreadsheetApp.getActiveSheet().getRange(
-    LogConfig.dateColumnName + changedRow
-  );
+  var dateRange = sheet.getRange(LogConfig.dateColumnName + changedRow);
   if (dateRange.getValue() == null || dateRange.getValue() == "") {
     dateRange.setValue(new Date());
   }
