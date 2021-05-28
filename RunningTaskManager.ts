@@ -39,6 +39,82 @@ function saveTask() {
   task.setCategory(category);
   writeTask(task);
 }
+
+class DisplayedTask {
+  private row: number;
+  private summary: string;
+  private startDate: Date;
+  constructor(row: number, summary: string, startDate: Date) {
+    this.row = row;
+    this.summary = summary;
+    this.startDate = startDate;
+  }
+  public getRow(): number {
+    return this.row;
+  }
+
+  public setRow(row: number): void {
+    this.row = row;
+  }
+
+  public getSummary(): string {
+    return this.summary;
+  }
+
+  public setSummary(summary: string): void {
+    this.summary = summary;
+  }
+
+  public getStartDate(): Date {
+    return this.startDate;
+  }
+
+  public setStartDate(startDate: Date): void {
+    this.startDate = startDate;
+  }
+}
+
+function cleanExpiredTask() {
+  var r = RunningTasksConfig.startRow - 1;
+  var expiredTasks: DisplayedTask[] = [];
+  var today = DateUtility.begin(new Date());
+
+  var spreadSheet = sheetFromName(TaskManagerConfig.sheetName);
+
+  while (true) {
+    r++;
+    var summary = spreadSheet
+      .getRange(RunningTasksConfig.summaryColumnName + r)
+      .getValue();
+    console.log("Checking expiration of row = %d, summary = %s", r, summary);
+    if (summary == null || summary == "" || summary == undefined || r >= 100) {
+      break;
+    }
+    var startDate = spreadSheet
+      .getRange(RunningTasksConfig.startDateColumnName + r)
+      .getValue();
+    var endDate = spreadSheet
+      .getRange(RunningTasksConfig.endDateColumnName + r)
+      .getValue();
+    if (endDate < today) {
+      expiredTasks.push(new DisplayedTask(r, summary, startDate));
+    }
+  }
+  if (expiredTasks.length <= 0) {
+    console.log("There is no expired task");
+    return;
+  }
+  var sheet = sheetFromName(TaskManagerConfig.sheetName);
+  expiredTasks
+    .sort((r1, r2) => {
+      return r2.getRow() - r1.getRow();
+    })
+    .forEach((r) => {
+      sheet.deleteRow(r.getRow());
+      console.log("Deleted task [%s] at row [%d]", r.getRow(), r.getSummary());
+    });
+}
+
 function writeTask(task: Task) {
   var spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet =
     SpreadsheetApp.getActive();
