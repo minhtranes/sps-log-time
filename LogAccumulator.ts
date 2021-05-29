@@ -42,7 +42,7 @@ function accumulateRange(accStartDate: Date, accEndDate: Date) {
   var date = accStartDate;
 
   while (date <= accEndDate) {
-    if (date.getDay() == 0 || date.getDay() == 7) {
+    if (date.getDay() == 0 || date.getDay() == 6) {
       console.log("Ignore Sunday and Saturday [%s]", date);
       date = DateUtility.addDays(date, 1);
       continue;
