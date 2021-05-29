@@ -39,6 +39,8 @@ class TaskManagerConfig {
   static endDateRow: number = 5;
   static hourPerDayRow: number = 6;
   static categoryRow: number = 7;
+
+  static defaultTaskExpirationDays: number = 20;
 }
 
 class RunningTasksConfig {

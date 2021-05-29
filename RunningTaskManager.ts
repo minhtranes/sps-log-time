@@ -23,7 +23,10 @@ function saveTask() {
     .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.endDateRow)
     .getValue();
   if (endDate == null || endDate == undefined || endDate.toString() == "") {
-    endDate = DateUtility.addDays(startDate, 20);
+    endDate = DateUtility.addDays(
+      startDate,
+      TaskManagerConfig.defaultTaskExpirationDays
+    );
   }
   endDate = DateUtility.begin(endDate);
   var hourPerDay: number = spreadSheet
