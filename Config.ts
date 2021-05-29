@@ -37,8 +37,9 @@ class TaskManagerConfig {
   static summaryRow: number = 3;
   static startDateRow: number = 4;
   static endDateRow: number = 5;
-  static hourPerDayRow: number = 6;
-  static categoryRow: number = 7;
+  static offDayRow: number = 6;
+  static hourPerDayRow: number = 7;
+  static categoryRow: number = 8;
 
   static defaultTaskExpirationDays: number = 20;
 }

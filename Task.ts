@@ -5,6 +5,15 @@ class Task {
   private hourPerDay: number;
   private loggedHour: number;
   private category: string;
+  private isOffTask: boolean = false;
+
+  public isIsOffTask(): boolean {
+    return this.isOffTask;
+  }
+
+  public setIsOffTask(isOffTask: boolean): void {
+    this.isOffTask = isOffTask;
+  }
 
   public getCategory(): string {
     return this.category;
