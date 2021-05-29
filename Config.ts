@@ -42,6 +42,8 @@ class TaskManagerConfig {
   static categoryRow: number = 8;
 
   static defaultTaskExpirationDays: number = 20;
+  static offTaskSummary: string = "Off";
+  static offTaskCategory: string = "Internal";
 }
 
 class RunningTasksConfig {

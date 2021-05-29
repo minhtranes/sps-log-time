@@ -1,17 +1,31 @@
 function saveTask() {
   var spreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet =
     SpreadsheetApp.getActive();
-  var summary: string = spreadSheet
-    .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.summaryRow)
+
+  var offTask: boolean = spreadSheet
+    .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.offDayRow)
     .getValue();
-  var category: string = spreadSheet
-    .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.categoryRow)
-    .getValue();
-  if (category == null || category == undefined || category == "") {
-    console.log("Category can not be empty");
-    return;
+
+  if (offTask) {
+    var summary: string = TaskManagerConfig.offTaskSummary;
+    var category: string = TaskManagerConfig.offTaskCategory;
+  } else {
+    var summary: string = spreadSheet
+      .getRange(
+        TaskManagerConfig.valueColumnName + TaskManagerConfig.summaryRow
+      )
+      .getValue();
+    var category: string = spreadSheet
+      .getRange(
+        TaskManagerConfig.valueColumnName + TaskManagerConfig.categoryRow
+      )
+      .getValue();
+    if (category == null || category == undefined || category == "") {
+      console.log("Category can not be empty");
+      return;
+    }
+    summary = category + "_" + summary;
   }
-  summary = category + "_" + summary;
 
   var startDate: Date = spreadSheet
     .getRange(
@@ -23,10 +37,14 @@ function saveTask() {
     .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.endDateRow)
     .getValue();
   if (endDate == null || endDate == undefined || endDate.toString() == "") {
-    endDate = DateUtility.addDays(
-      startDate,
-      TaskManagerConfig.defaultTaskExpirationDays
-    );
+    if (offTask) {
+      endDate = startDate;
+    } else {
+      endDate = DateUtility.addDays(
+        startDate,
+        TaskManagerConfig.defaultTaskExpirationDays
+      );
+    }
   }
   endDate = DateUtility.begin(endDate);
   var hourPerDay: number = spreadSheet
