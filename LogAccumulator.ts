@@ -60,6 +60,15 @@ function accumulateDay(tasks: Task[], date: Date) {
     console.warn("There is no task applied for day [%s] !", date);
     return;
   }
+  if (
+    appliedTasks.filter(
+      (t) => t.getSummary() == TaskManagerConfig.offTaskSummary
+    ).length > 0
+  ) {
+    console.info("[%s] is an off day", date);
+    return;
+  }
+
   console.log("Reset logged time to 0");
   appliedTasks.forEach((t) => t.setLoggedHour(0));
   console.log("Accumulate date [%s]", date);
