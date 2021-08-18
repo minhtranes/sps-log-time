@@ -7,11 +7,23 @@ function accumulateToday() {
 }
 
 function accumulateYesterday() {
-  var yesterday = DateUtility.addDays(new Date(), -1);
-  var accStartDate = DateUtility.begin(yesterday);
-  var accEndDate = DateUtility.begin(yesterday);
+  accumulateLastNDays(-1);
+}
 
-  accumulateRange(accStartDate, accEndDate);
+function accumulateLast2Days() {
+  accumulateLastNDays(-2);
+}
+
+function accumulateLast3Days() {
+  accumulateLastNDays(-3);
+}
+
+function accumulateLast4Days() {
+  accumulateLastNDays(-4);
+}
+
+function accumulateLast5Days() {
+  accumulateLastNDays(-5);
 }
 
 function accumulateThisMonth() {
@@ -19,6 +31,14 @@ function accumulateThisMonth() {
   accStartDate.setMonth(accStartDate.getMonth(), 1);
   accStartDate = DateUtility.begin(accStartDate);
   var accEndDate = DateUtility.begin(new Date());
+
+  accumulateRange(accStartDate, accEndDate);
+}
+
+function accumulateLastNDays(lastDays: number) {
+  var yesterday = DateUtility.addDays(new Date(), lastDays);
+  var accStartDate = DateUtility.begin(yesterday);
+  var accEndDate = DateUtility.begin(yesterday);
 
   accumulateRange(accStartDate, accEndDate);
 }

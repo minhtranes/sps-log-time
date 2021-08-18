@@ -20,6 +20,10 @@ function onOpen(e) {
     .createMenu("SPS")
     .addItem("Accumulate Yesterday", "accumulateYesterday")
     .addItem("Accumulate Today", "accumulateToday")
+    .addItem("Accumulate Last 2 Days", "accumulateLast2Days")
+    .addItem("Accumulate Last 3 Days", "accumulateLast3Days")
+    .addItem("Accumulate Last 4 Days", "accumulateLast4Days")
+    .addItem("Accumulate Last 5 Days", "accumulateLast5Days")
     .addItem("Accumulate This Month !!", "accumulateThisMonth")
     .addItem("Clean Exipred Tasks", "cleanExpiredTask")
 
