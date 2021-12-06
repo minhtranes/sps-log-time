@@ -40,6 +40,8 @@ class TaskManagerConfig {
   static offDayRow: number = 6;
   static hourPerDayRow: number = 7;
   static categoryRow: number = 8;
+  static workShiftDurationInHourRow: number = 9;
+  static minTaskDurationInHourRow: number = 10;
 
   static defaultTaskExpirationDays: number = 20;
   static offTaskSummary: string = "Off";

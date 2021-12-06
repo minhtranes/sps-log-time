@@ -52,6 +52,21 @@ function accumulateRange(accStartDate: Date, accEndDate: Date) {
     );
     return;
   }
+
+  var spreadSheet = sheetFromName(TaskManagerConfig.sheetName);
+  var workShiftDurationInHour: number = spreadSheet
+    .getRange(
+      TaskManagerConfig.valueColumnName +
+        TaskManagerConfig.workShiftDurationInHourRow
+    )
+    .getValue();
+  var minTaskDurationInHour: number = spreadSheet
+    .getRange(
+      TaskManagerConfig.valueColumnName +
+        TaskManagerConfig.minTaskDurationInHourRow
+    )
+    .getValue();
+
   var tasks: Task[] = runningTasks();
   if (tasks == null || tasks.length <= 0) {
     console.log("There is no running task");
@@ -67,11 +82,17 @@ function accumulateRange(accStartDate: Date, accEndDate: Date) {
       date = DateUtility.addDays(date, 1);
       continue;
     }
-    accumulateDay(tasks, date);
+    accumulateDay(tasks, date, workShiftDurationInHour, minTaskDurationInHour);
     date = DateUtility.addDays(date, 1);
   }
 }
-function accumulateDay(tasks: Task[], date: Date) {
+
+function accumulateDay(
+  tasks: Task[],
+  date: Date,
+  workShiftDurationInHour: number,
+  minTaskDurationInHour: number
+) {
   var appliedTasks = tasks.filter((t) => {
     return t.getStartDate() <= date && t.getEndDate() >= date;
   });
@@ -108,7 +129,7 @@ function accumulateDay(tasks: Task[], date: Date) {
   }
 
   var fixedTasks = appliedTasks.filter((t) => t.getHourPerDay() > 0);
-  var sumFixedTasks =
+  var sumFixedTasksInHour =
     fixedTasks.length > 0
       ? fixedTasks
           .map((t) => t.getHourPerDay())
@@ -122,17 +143,21 @@ function accumulateDay(tasks: Task[], date: Date) {
     .forEach((t) => t.setLoggedHour(t.getHourPerDay()));
 
   if (fixedTasks < appliedTasks) {
-    var restH = 8 - sumFixedTasks;
+    var restH = workShiftDurationInHour - sumFixedTasksInHour;
     var c = 0;
     while (restH > 0) {
       var idx = c % appliedTasks.length;
       if (appliedTasks[idx].getHourPerDay() > 0) {
+        // Skip the fixed tasks
         c++;
         continue;
       }
-      appliedTasks[idx].setLoggedHour(appliedTasks[idx].getLoggedHour() + 1);
+      appliedTasks[idx].setLoggedHour(
+        appliedTasks[idx].getLoggedHour() +
+          (restH < minTaskDurationInHour ? restH : minTaskDurationInHour)
+      );
 
-      restH--;
+      restH -= minTaskDurationInHour;
       c++;
     }
   }
