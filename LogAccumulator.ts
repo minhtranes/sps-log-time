@@ -1,9 +1,9 @@
 function accumulateToday() {
-  var today = new Date();
-  var accStartDate = DateUtility.begin(today);
-  var accEndDate = DateUtility.begin(today);
+  accumulateLastNDays(0);
+}
 
-  accumulateRange(accStartDate, accEndDate);
+function accumulateTomorrow() {
+  accumulateLastNDays(1);
 }
 
 function accumulateYesterday() {

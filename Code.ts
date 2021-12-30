@@ -25,6 +25,7 @@ function onOpen(e) {
     .addItem("Accumulate Last 4 Days", "accumulateLast4Days")
     .addItem("Accumulate Last 5 Days", "accumulateLast5Days")
     .addItem("Accumulate This Month !!", "accumulateThisMonth")
+    .addItem("Accumulate Tomorrow", "accumulateTomorrow")
     .addItem("Clean Exipred Tasks", "cleanExpiredTask")
 
     .addToUi();
