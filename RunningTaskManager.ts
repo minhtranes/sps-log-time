@@ -95,6 +95,10 @@ class DisplayedTask {
   }
 }
 
+function cleanLastMonthTask() {
+  cleanExpiredTask(DateUtility.beginningOfThisMonth());
+}
+
 function cleanExpiredTask(lastDay: Date) {
   var r = RunningTasksConfig.startRow - 1;
   var expiredTasks: DisplayedTask[] = [];
@@ -122,7 +126,7 @@ function cleanExpiredTask(lastDay: Date) {
     var endDate = spreadSheet
       .getRange(RunningTasksConfig.endDateColumnName + r)
       .getValue();
-    if (endDate < today) {
+    if (endDate < lastDay) {
       expiredTasks.push(new DisplayedTask(r, summary, startDate));
     }
   }

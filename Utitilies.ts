@@ -13,6 +13,12 @@ class DateUtility {
     newDate.setHours(0, 0, 0, 0);
     return newDate;
   }
+
+  static beginningOfThisMonth(): Date {
+    var today = new Date();
+    today.setDate(1);
+    return this.begin(today);
+  }
 }
 
 class SheetNames {
@@ -21,7 +27,7 @@ class SheetNames {
   }
 
   static reportSheet(dateString: string): string {
-    var yearMonth = dateString.substr(0, "yyyy.MM".length);
+    var yearMonth = dateString.substring(0, "yyyy.MM".length);
     return SheetNames.appendReportSheet(yearMonth);
   }
 }
