@@ -95,10 +95,15 @@ class DisplayedTask {
   }
 }
 
-function cleanExpiredTask() {
+function cleanExpiredTask(lastDay: Date) {
   var r = RunningTasksConfig.startRow - 1;
   var expiredTasks: DisplayedTask[] = [];
   var today = DateUtility.begin(new Date());
+
+  if (lastDay >= today) {
+    console.log("Last day could not be greater or equals to today");
+    return;
+  }
 
   var spreadSheet = sheetFromName(TaskManagerConfig.sheetName);
 
