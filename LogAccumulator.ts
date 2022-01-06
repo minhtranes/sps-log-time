@@ -66,6 +66,24 @@ function accumulateRange(accStartDate: Date, accEndDate: Date) {
         TaskManagerConfig.minTaskDurationInHourRow
     )
     .getValue();
+  var employeeName: string = spreadSheet
+    .getRange(
+      TaskManagerConfig.valueColumnName + TaskManagerConfig.employeeNameRow
+    )
+    .getValue();
+  var employeeId: string = spreadSheet
+    .getRange(
+      TaskManagerConfig.valueColumnName + TaskManagerConfig.employeeIdRow
+    )
+    .getValue();
+  var internalCode: string = spreadSheet
+    .getRange(
+      TaskManagerConfig.valueColumnName + TaskManagerConfig.internalCodeRow
+    )
+    .getValue();
+  var team: string = spreadSheet
+    .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.teamRow)
+    .getValue();
 
   var tasks: Task[] = runningTasks();
   if (tasks == null || tasks.length <= 0) {
@@ -82,7 +100,16 @@ function accumulateRange(accStartDate: Date, accEndDate: Date) {
       date = DateUtility.addDays(date, 1);
       continue;
     }
-    accumulateDay(tasks, date, workShiftDurationInHour, minTaskDurationInHour);
+    accumulateDay(
+      tasks,
+      date,
+      workShiftDurationInHour,
+      minTaskDurationInHour,
+      employeeName,
+      employeeId,
+      internalCode,
+      team
+    );
     date = DateUtility.addDays(date, 1);
   }
 }
@@ -91,7 +118,11 @@ function accumulateDay(
   tasks: Task[],
   date: Date,
   workShiftDurationInHour: number,
-  minTaskDurationInHour: number
+  minTaskDurationInHour: number,
+  employeeName: string,
+  employeeId: string,
+  internalCode: string,
+  team: string
 ) {
   var appliedTasks = tasks.filter((t) => {
     return t.getStartDate() <= date && t.getEndDate() >= date;
@@ -182,16 +213,21 @@ function accumulateDay(
       .getRange(MonthlyReportConfig.durationColumnName + insertRow)
       .setValue(t.getLoggedHour());
 
-    sheet.getRange(MonthlyReportConfig.idColumnName + insertRow).setValue(3144);
+    sheet
+      .getRange(MonthlyReportConfig.idColumnName + insertRow)
+      .setValue(employeeId);
     sheet
       .getRange(MonthlyReportConfig.nameColumnName + insertRow)
-      .setValue("Trần Hoàng Minh");
+      .setValue(employeeName);
     sheet
       .getRange(MonthlyReportConfig.monthColumnName + insertRow)
       .setValue(date.getMonth() + 1);
     sheet
       .getRange(MonthlyReportConfig.internalCodeColumnName + insertRow)
-      .setValue("DDAR-NW");
+      .setValue(internalCode);
+    sheet
+      .getRange(MonthlyReportConfig.teamColumnName + insertRow)
+      .setValue(team);
     sheet
       .getRange(MonthlyReportConfig.categoryColumnName + insertRow)
       .setValue(t.getCategory());

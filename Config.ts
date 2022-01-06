@@ -45,6 +45,10 @@ class TaskManagerConfig {
   static categoryRow: number = 8;
   static workShiftDurationInHourRow: number = 9;
   static minTaskDurationInHourRow: number = 10;
+  static employeeNameRow: number = 11;
+  static employeeIdRow: number = 12;
+  static internalCodeRow: number = 13;
+  static teamRow: number = 14;
 
   static defaultTaskExpirationDays: number = 20;
   static offTaskSummary: string = "Off";
@@ -52,7 +56,7 @@ class TaskManagerConfig {
 }
 
 class RunningTasksConfig {
-  static startRow: number = 15;
+  static startRow: number = 20;
   static summaryColumnName: string = "E";
   static startDateColumnName: string = "F";
   static endDateColumnName: string = "G";
