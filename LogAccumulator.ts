@@ -187,6 +187,12 @@ function accumulateDay(
       .getRange(MonthlyReportConfig.nameColumnName + insertRow)
       .setValue("Trần Hoàng Minh");
     sheet
+      .getRange(MonthlyReportConfig.monthColumnName + insertRow)
+      .setValue(date.getMonth() + 1);
+    sheet
+      .getRange(MonthlyReportConfig.internalCodeColumnName + insertRow)
+      .setValue("DDAR-NW");
+    sheet
       .getRange(MonthlyReportConfig.categoryColumnName + insertRow)
       .setValue(t.getCategory());
   });

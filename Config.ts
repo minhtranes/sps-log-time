@@ -24,6 +24,9 @@ class MonthlyReportConfig {
   static dateColumnNumber: number = 3;
   static durationColumnName: string = "D";
   static commentColumnName: string = "E";
+  static monthColumnName: string = "F";
+  static teamColumnName: string = "G";
+  static internalCodeColumnName: string = "H";
   static commentColumnNumber: number = 5;
   static categoryColumnName: string = "I";
   static taskColumnName: string = "J";
