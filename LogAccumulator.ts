@@ -246,6 +246,9 @@ function accumulateDay(
     sheet
       .getRange(MonthlyReportConfig.categoryColumnName + insertRow)
       .setValue(t.getCategory());
+    sheet
+      .getRange(MonthlyReportConfig.otColumnName + insertRow)
+      .setValue(t.isIsOTTask());
   });
 }
 function indicateReportSheet(date: Date): GoogleAppsScript.Spreadsheet.Sheet {

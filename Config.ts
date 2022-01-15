@@ -29,8 +29,7 @@ class MonthlyReportConfig {
   static internalCodeColumnName: string = "H";
   static commentColumnNumber: number = 5;
   static categoryColumnName: string = "I";
-  static taskColumnName: string = "J";
-  static taskColumnNumber: number = 10;
+  static otColumnName: string = "J";
 }
 
 class TaskManagerConfig {
