@@ -6,6 +6,15 @@ class Task {
   private loggedHour: number;
   private category: string;
   private isOffTask: boolean = false;
+  private isOTTask: boolean = false;
+
+  public isIsOTTask(): boolean {
+    return this.isOTTask;
+  }
+
+  public setOTTask(isOTTask: boolean): void {
+    this.isOTTask = isOTTask;
+  }
 
   public isIsOffTask(): boolean {
     return this.isOffTask;
@@ -35,12 +44,14 @@ class Task {
     summary: string,
     startDate: Date,
     endDate: Date,
-    hourPerDay: number
+    hourPerDay: number,
+    isOTTask: boolean
   ) {
     this.summary = summary;
     this.startDate = startDate;
     this.endDate = endDate;
     this.hourPerDay = hourPerDay;
+    this.isOTTask = isOTTask;
   }
 
   public getSummary(): string {

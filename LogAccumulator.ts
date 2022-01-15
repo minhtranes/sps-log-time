@@ -36,8 +36,10 @@ function accumulateThisMonth() {
 }
 
 function accumulateLastNDays(lastDays: number) {
-  var yesterday = DateUtility.addDays(new Date(), lastDays);
-  var accStartDate = DateUtility.begin(yesterday);
+  var yesterday = DateUtility.addDays(new Date(), -1);
+  var accStartDate = DateUtility.begin(
+    DateUtility.addDays(new Date(), lastDays)
+  );
   var accEndDate = DateUtility.begin(yesterday);
 
   accumulateRange(accStartDate, accEndDate);
@@ -124,6 +126,12 @@ function accumulateDay(
   internalCode: string,
   team: string
 ) {
+  /*
+   * There are three type of tasks:
+   *   + Fixed task: normal task which has predefined duration
+   *   + Adjusted task: normal task whose duration is calculated to fulfill a working shift duration
+   *   + Overtime task: special task which is appended after calculate working shift
+   */
   var appliedTasks = tasks.filter((t) => {
     return t.getStartDate() <= date && t.getEndDate() >= date;
   });
@@ -159,7 +167,10 @@ function accumulateDay(
     dateRows.push(MonthlyReportConfig.firstRow);
   }
 
-  var fixedTasks = appliedTasks.filter((t) => t.getHourPerDay() > 0);
+  // Filter for the fixed tasks
+  var fixedTasks = appliedTasks.filter(
+    (t) => t.getHourPerDay() > 0 && t.isIsOTTask() != true
+  );
   var sumFixedTasksInHour =
     fixedTasks.length > 0
       ? fixedTasks
@@ -174,12 +185,16 @@ function accumulateDay(
     .forEach((t) => t.setLoggedHour(t.getHourPerDay()));
 
   if (fixedTasks < appliedTasks) {
+    // Calculate the Adjusted Tasks
     var restH = workShiftDurationInHour - sumFixedTasksInHour;
     var c = 0;
     while (restH > 0) {
       var idx = c % appliedTasks.length;
-      if (appliedTasks[idx].getHourPerDay() > 0) {
-        // Skip the fixed tasks
+      if (
+        appliedTasks[idx].getHourPerDay() > 0 ||
+        appliedTasks[idx].isIsOTTask()
+      ) {
+        // Skip the Fixed tasks and OT task
         c++;
         continue;
       }

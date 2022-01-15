@@ -41,14 +41,15 @@ class TaskManagerConfig {
   static startDateRow: number = 4;
   static endDateRow: number = 5;
   static offDayRow: number = 6;
-  static hourPerDayRow: number = 7;
-  static categoryRow: number = 8;
-  static workShiftDurationInHourRow: number = 9;
-  static minTaskDurationInHourRow: number = 10;
-  static employeeNameRow: number = 11;
-  static employeeIdRow: number = 12;
-  static internalCodeRow: number = 13;
-  static teamRow: number = 14;
+  static otRow: number = 7;
+  static hourPerDayRow: number = 8;
+  static categoryRow: number = 9;
+  static workShiftDurationInHourRow: number = 10;
+  static minTaskDurationInHourRow: number = 11;
+  static employeeNameRow: number = 12;
+  static employeeIdRow: number = 13;
+  static internalCodeRow: number = 14;
+  static teamRow: number = 15;
 
   static defaultTaskExpirationDays: number = 20;
   static offTaskSummary: string = "Off";
@@ -62,4 +63,5 @@ class RunningTasksConfig {
   static endDateColumnName: string = "G";
   static hourPerDayColumnName: string = "H";
   static categoryColumnName: string = "I";
+  static otColumnName: string = "J";
 }

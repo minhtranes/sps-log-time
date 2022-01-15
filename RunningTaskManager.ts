@@ -6,6 +6,10 @@ function saveTask() {
     .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.offDayRow)
     .getValue();
 
+  var otTask: boolean = spreadSheet
+    .getRange(TaskManagerConfig.valueColumnName + TaskManagerConfig.otRow)
+    .getValue();
+
   if (offTask) {
     var summary: string = TaskManagerConfig.offTaskSummary;
     var category: string = TaskManagerConfig.offTaskCategory;
@@ -56,7 +60,7 @@ function saveTask() {
     hourPerDay = 0;
   }
 
-  var task = new Task(summary, startDate, endDate, hourPerDay);
+  var task = new Task(summary, startDate, endDate, hourPerDay, otTask);
   task.setCategory(category);
   writeTask(task);
 }
@@ -165,6 +169,9 @@ function writeTask(task: Task) {
   spreadSheet
     .getRange(RunningTasksConfig.categoryColumnName + r)
     .setValue(task.getCategory());
+  spreadSheet
+    .getRange(RunningTasksConfig.otColumnName + r)
+    .setValue(task.isIsOTTask());
   console.log(
     "Wrote task [%s, %s, %s, %d] into row [%d]",
     task.getSummary(),
@@ -229,7 +236,10 @@ function runningTasks(): Task[] {
     var category = spreadSheet
       .getRange(RunningTasksConfig.categoryColumnName + r)
       .getValue();
-    var task = new Task(summary, startDate, endDate, hourPerDate);
+    var otTask = spreadSheet
+      .getRange(RunningTasksConfig.otColumnName + r)
+      .getValue();
+    var task = new Task(summary, startDate, endDate, hourPerDate, otTask);
     task.setCategory(category);
     task.setLoggedHour(0);
     tasks.push(task);
