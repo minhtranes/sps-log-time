@@ -36,11 +36,15 @@ function accumulateThisMonth() {
 }
 
 function accumulateLastNDays(lastDays: number) {
-  var yesterday = DateUtility.addDays(new Date(), -1);
   var accStartDate = DateUtility.begin(
     DateUtility.addDays(new Date(), lastDays)
   );
-  var accEndDate = DateUtility.begin(yesterday);
+  var accEndDate = DateUtility.begin(
+    DateUtility.addDays(
+      new Date(),
+      lastDays < -1 ? -1 : lastDays > 1 ? 1 : lastDays
+    )
+  );
 
   accumulateRange(accStartDate, accEndDate);
 }
@@ -127,7 +131,8 @@ function accumulateDay(
   team: string
 ) {
   /*
-   * There are three type of tasks:
+   * There are four types of task:
+   *   + Off task: if day contains this task, then Fixed tasks will be ignored
    *   + Fixed task: normal task which has predefined duration
    *   + Adjusted task: normal task whose duration is calculated to fulfill a working shift duration
    *   + Overtime task: special task which is appended after calculate working shift
@@ -140,14 +145,25 @@ function accumulateDay(
     console.warn("There is no task applied for day [%s] !", date);
     return;
   }
+
   if (
     appliedTasks.filter(
       (t) => t.getSummary() == TaskManagerConfig.offTaskSummary
     ).length > 0
   ) {
-    console.info("[%s] is an off day", date);
-    return;
+    console.warn(
+      "[%s] has an off time, then all fixed tasks will be ignored !!!",
+      date
+    );
+    appliedTasks = appliedTasks.filter(
+      (t) =>
+        t.getHourPerDay() <= 0 ||
+        t.isIsOTTask() == true ||
+        t.getSummary() == TaskManagerConfig.offTaskSummary
+    );
   }
+  console.info("Applied tasks:");
+  appliedTasks.forEach((t) => console.info("[%s]", t.getSummary()));
 
   console.log("Reset logged time to 0");
   appliedTasks.forEach((t) => t.setLoggedHour(0));
@@ -169,7 +185,7 @@ function accumulateDay(
 
   // Filter for the fixed tasks
   var fixedTasks = appliedTasks.filter(
-    (t) => t.getHourPerDay() > 0 && t.isIsOTTask() != true
+    (t) => t.getHourPerDay() > 0 && t.isIsOTTask() == false
   );
   var sumFixedTasksInHour =
     fixedTasks.length > 0
@@ -207,12 +223,8 @@ function accumulateDay(
       c++;
     }
   }
-  appliedTasks
-    .filter((t) => t.getLoggedHour() <= 0)
-    .forEach((t) => {
-      t.setLoggedHour(1);
-      console.warn("Assign %d for task [%s]", 1, t.getSummary());
-    });
+  // After calculation, accept only tasks whose loggedTime is greater than 0
+  appliedTasks = appliedTasks.filter((t) => t.getLoggedHour() > 0);
 
   console.log("Append rows of date [%s]", date);
   var insertRow = dateRows[dateRows.length - 1];

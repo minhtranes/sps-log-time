@@ -56,8 +56,18 @@ function saveTask() {
       TaskManagerConfig.valueColumnName + TaskManagerConfig.hourPerDayRow
     )
     .getValue();
+  var workShiftDuration = spreadSheet
+    .getRange(
+      TaskManagerConfig.valueColumnName +
+        TaskManagerConfig.workShiftDurationInHourRow
+    )
+    .getValue();
   if (hourPerDay == null || hourPerDay == undefined) {
-    hourPerDay = 0;
+    if (offTask) {
+      hourPerDay = workShiftDuration;
+    } else {
+      hourPerDay = 0;
+    }
   }
 
   var task = new Task(summary, startDate, endDate, hourPerDay, otTask);
