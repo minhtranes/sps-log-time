@@ -57,6 +57,7 @@ class TaskManagerConfig {
 
 class RunningTasksConfig {
   static startRow: number = 20;
+  static endRow: number = 1000;
   static summaryColumnName: string = "E";
   static startDateColumnName: string = "F";
   static endDateColumnName: string = "G";

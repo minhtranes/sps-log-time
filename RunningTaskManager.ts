@@ -231,7 +231,7 @@ function runningTasks(): Task[] {
       .getRange(RunningTasksConfig.summaryColumnName + r)
       .getValue();
     console.log("Collecting from row = %d, summary = %s", r, summary);
-    if (summary == null || summary == "" || summary == undefined || r >= 100) {
+    if (summary == null || summary == "" || summary == undefined || r >= RunningTasksConfig.endRow) {
       break;
     }
     var startDate = spreadSheet
